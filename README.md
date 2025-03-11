@@ -40,8 +40,8 @@ Detailed, step-by-step tutorials are provided for each analytical component:
 - [01. Data Acquisition](Tutorials/01_Data_Acquisition.md): Instructions for downloading genomic data and importing into Galaxy.
 - [02. Host Sequence Removal](Tutorials/02_Host_Sequence_Removal.md): Methods for removal of human contamination using Bowtie2 for Illumina data and BLAST-based strategies for PacBio sequences.
 - [03. Quality Control](Tutorials/03_Quality_Control.md): Guidelines for assessing and trimming reads based on quality metrics.
-- [04. Hybrid Assembly with SPAdes](Tutorials/Hybrid_Assembly.md): Comprehensive protocol for hybrid genome assembly integrating Illumina and PacBio data using SPAdes.
-- [05. Assembly Evaluation](Tutorials/Assembly_Evaluation.md): Evaluating assembly quality and completeness through metrics such as N50, genome coverage, QUAST statistics, and BUSCO completeness assessments.
+- [04. Hybrid Assembly with SPAdes](Tutorials/04_Hybrid_Assembly.md): Comprehensive protocol for hybrid genome assembly integrating Illumina and PacBio data using SPAdes.
+- [05. Assembly Evaluation](Tutorials/05_Assembly_Evaluation.md): Evaluating assembly quality and completeness through metrics such as N50, genome coverage, QUAST statistics, and BUSCO completeness assessments.
 
 ## Additional Resources
 
