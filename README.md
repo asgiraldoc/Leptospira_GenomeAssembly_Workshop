@@ -45,4 +45,4 @@ Detailed, step-by-step tutorials are provided for each analytical component:
 
 ## Additional Resources
 
-- [Galaxy Workflow Files](Resources/)
+- [Galaxy Workflow Files](https://usegalaxy.org/u/asgiraldoc/w/hybrid-genome-assembly-tutorial-using-galaxy)
