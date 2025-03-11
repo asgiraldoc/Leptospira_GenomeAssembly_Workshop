@@ -101,5 +101,3 @@ Proceed to genome assembly using the cleaned datasets:
 
 - [Bowtie2 Manual](http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml)
 - [NCBI BLAST Documentation](https://blast.ncbi.nlm.nih.gov/Blast.cgi)
-- [Galaxy Project](https://usegalaxy.org/)
-
