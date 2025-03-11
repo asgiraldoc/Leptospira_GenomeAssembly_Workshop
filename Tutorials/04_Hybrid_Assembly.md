@@ -73,7 +73,7 @@ Evaluate these results in detail during the assembly evaluation phase.
 
 Proceed to assess assembly quality using evaluation metrics and tools:
 
-→ [05. Assembly Evaluation](Assembly_Evaluation.md)
+→ [05. Assembly Evaluation](05_Assembly_Evaluation.md)
 
 ---
 
