@@ -93,7 +93,7 @@ These datasets are ready for hybrid genome assembly.
 
 Proceed to genome assembly using the cleaned datasets:
 
-→ [03. Hybrid Assembly with SPAdes](Hybrid_Assembly.md)
+→ [03. Quality Control](Tutorials/03_Quality_Control.md)
 
 ---
 
