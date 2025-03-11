@@ -29,9 +29,9 @@ The genomic sequencing data utilized in this tutorial is publicly accessible thr
 
 | SRA Accession | Sequencing Platform | BioProject | BioSample     | Instrument          | Library Layout | Collection Site |
 |---------------|---------------------|------------|---------------|---------------------|----------------|-----------------|
-| SRR4272049    | Illumina HiSeq 2000 | PRJNA231221 | SAMN04875540 | FDAARGOS_203        | Paired-end     | Brazil          |
-| SRR4272050    | PacBio RS           | PRJNA231221 | SAMN04875540 | FDAARGOS_203        | Single-end     | Brazil          |
-| SRR4272051    | PacBio RS           | PRJNA231221 | SAMN04875540 | FDAARGOS_203        | Single-end     | Brazil          |
+| [SRR4272049](https://www.ncbi.nlm.nih.gov/sra/SRX2179272[accn])    | Illumina HiSeq 2000 | PRJNA231221 | SAMN04875540 | FDAARGOS_203        | Paired-end     | Brazil          |
+| [SRR4272050](https://www.ncbi.nlm.nih.gov/sra/SRX2179274[accn])    | PacBio RS           | PRJNA231221 | SAMN04875540 | FDAARGOS_203        | Single-end     | Brazil          |
+| [SRR4272051](https://www.ncbi.nlm.nih.gov/sra/SRX2179273[accn])    | PacBio RS           | PRJNA231221 | SAMN04875540 | FDAARGOS_203        | Single-end     | Brazil          |
 
 ## Tutorials
 
