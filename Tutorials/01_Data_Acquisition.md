@@ -69,7 +69,7 @@ After the upload completes, the datasets will appear in your Galaxy History, rea
 
 Proceed to remove host contamination sequences from the datasets:
 
-→ [02. Host Sequence Removal](Host_Sequence_Removal.md)
+→ [02. Host Sequence Removal](02_Host_Sequence_Removal.md)
 
 ---
 
@@ -77,5 +77,4 @@ Proceed to remove host contamination sequences from the datasets:
 
 - [NCBI Sequence Read Archive](https://www.ncbi.nlm.nih.gov/sra)
 - [SRA Toolkit Documentation](https://github.com/ncbi/sra-tools/wiki)
-- [Galaxy Project](https://usegalaxy.org/)
 
