@@ -56,7 +56,7 @@ Trimmomatic enhances sequencing quality by removing adapters and trimming bases 
 
 Proceed to hybrid genome assembly using the trimmed and quality-controlled reads:
 
-→ [04. Hybrid Genome Assembly with SPAdes](Hybrid_Assembly.md)
+→ [04. Hybrid Genome Assembly with SPAdes](04_Hybrid_Assembly.md)
 
 ---
 
