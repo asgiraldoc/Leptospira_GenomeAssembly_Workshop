@@ -4,7 +4,7 @@ This repository provides tutorials, resources, and guidance for conducting hybri
 
 ## Overview
 
-This tutorial series guides the user through the complete workflow for genomic data acquisition, preprocessing, hybrid genome assembly (combining Illumina short-read and PacBio long-read sequencing technologies), and subsequent assembly evaluation. Particular emphasis is placed on removing host-derived contaminant sequences to ensure accurate microbial genomic analysis.
+This tutorial series guides the user through the complete workflow for genomic data acquisition, preprocessing, hybrid genome assembly (combining Illumina short-read and PacBio long-read sequencing technologies), and subsequent assembly evaluation. 
 
 ## Organism Description
 
