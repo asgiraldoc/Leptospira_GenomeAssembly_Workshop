@@ -46,15 +46,3 @@ Detailed, step-by-step tutorials are provided for each analytical component:
 ## Additional Resources
 
 - [Galaxy Workflow Files](Resources/)
-- [Example Dataset Files](Resources/Example_Data/)
-- [External Documentation and Useful Links](Resources/Useful_Links.md)
-
-## Citation
-
-If you utilize these tutorials or resources in your research or educational activities, please cite this repository as follows:
-
-> Developed by [Your Name]. Hybrid Genome Assembly Tutorial Using Galaxy. GitHub Repository: [insert your repository link here]. Accessed on [insert access date].
-
----
-
-To begin, please proceed to the first tutorial: [Data Acquisition](Tutorials/01_Data_Acquisition.md).
