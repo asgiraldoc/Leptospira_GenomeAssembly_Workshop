@@ -35,12 +35,11 @@ unzip GRCh38_noalt_as.zip
 
 #### Run Bowtie2
 
-1. In Galaxy, select **Bowtie2** from the "Mapping" or "Alignment" tools category.
+1. In Galaxy, select **BWA-MEM** from the "Mapping" or "Alignment" tools category.
 2. Set parameters as follows:
-   - **Select reference genome**: Uploaded human genome (GRCh38).
+   - **Select reference genome**: human genome.
    - **Input**: Quality-controlled Illumina reads.
-   - **Alignment mode**: "Very sensitive local"
-   - **Output unaligned reads**: Yes (`--un-conc-gz` to retain paired-end reads that do not align to the human genome).
+
 3. Execute the tool.
 
 #### Resulting Files
