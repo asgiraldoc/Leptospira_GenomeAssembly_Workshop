@@ -11,9 +11,9 @@ This tutorial provides step-by-step instructions to effectively remove host-deri
 
 ---
 
-## Input Files
+## Input Files (post quality control)
 
-- Illumina paired-end sequencing reads (post quality control).
+- Illumina paired-end sequencing reads.
 - PacBio long-read sequencing data.
 
 ---
