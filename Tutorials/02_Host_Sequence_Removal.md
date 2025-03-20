@@ -52,42 +52,6 @@ These files are suitable for subsequent genome assembly analyses.
 
 ---
 
-### Step 2: Removal of Human Reads from PacBio Data Using BLAST
-
-Due to the longer read length of PacBio sequences, host DNA removal can be performed using BLAST.
-
-#### Preparation
-
-- Ensure the human reference genome is available in FASTA format within Galaxy.
-
-#### Run BLAST (Blastn)
-
-1. Select **NCBI BLAST+ blastn** from Galaxy’s tools.
-2. Set the following parameters:
-   - **Query sequence(s)**: PacBio reads (`SRR4272050.fastq.gz`, `SRR4272051.fastq.gz`).
-   - **Database**: Human genome reference.
-   - **E-value threshold**: 1e-10
-   - **Output format**: Tabular
-3. Execute the tool to identify PacBio reads aligning to the human genome.
-
-#### Extract Non-host Reads
-
-1. Use the Galaxy tool **Filter sequences by ID**:
-   - Input the original PacBio reads.
-   - Provide the list of IDs from BLAST results indicating mapped (host) reads.
-   - Set filtering mode to exclude sequences matching listed IDs.
-2. Execute to obtain cleaned PacBio reads without human contamination.
-
-#### Resulting Files
-
-The output includes cleaned PacBio sequencing files:
-- `host_removed_SRR4272050.fastq.gz`
-- `host_removed_SRR4272051.fastq.gz`
-
-These datasets are ready for hybrid genome assembly.
-
----
-
 ## Next Steps
 
 Proceed to genome assembly using the cleaned datasets:
