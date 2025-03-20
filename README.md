@@ -18,7 +18,7 @@ This tutorial series guides the user through the complete workflow for genomic d
 This tutorial is structured around the following key analytical steps:
 
 1. **Data Acquisition**: Retrieving Illumina and PacBio sequencing datasets from public databases.
-2. **Host Sequence Removal**: Eliminating contaminant host sequences (human genome sequences) using Bowtie2 (Illumina) and BLASTn (PacBio).
+2. **Host Sequence Removal**: Eliminating contaminant host sequences (human genome sequences) using BWA-MEM (Illumina).
 3. **Quality Control**: Quality assessment and trimming of sequencing reads.
 4. **Hybrid Genome Assembly**: Genome assembly using SPAdes, incorporating both Illumina and PacBio reads.
 5. **Assembly Evaluation**: Quality and completeness assessment of the assembled genome using standard evaluation metrics and tools (QUAST).
