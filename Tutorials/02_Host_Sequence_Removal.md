@@ -1,6 +1,6 @@
 # 02 - Host Sequence Removal
 
-This tutorial provides step-by-step instructions to effectively remove host-derived contamination sequences from genomic datasets using Galaxy. Specifically, it addresses the removal of human DNA contamination from Illumina short-read data using Bowtie2 and from PacBio long-read data using BLAST-based strategies.
+This tutorial provides step-by-step instructions to effectively remove host-derived contamination sequences from genomic datasets using Galaxy. Specifically, it addresses the removal of human DNA contamination from Illumina short-read data using BWA-MEM.
 
 ---
 
