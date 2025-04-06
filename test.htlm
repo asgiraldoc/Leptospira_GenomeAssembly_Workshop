@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <!-- UPDATE Title -->
+        <title>Hands-on: Hybrid Genome Assembly of Leptospira using Galaxy</title>
+
+        <meta name="google-site-verification" content="9mOXn2JL833-i7-aioCCEuIdG4_tb6qjwUozB5GJnPQ" />
+
+        <!-- JavaScript Error Monitoring, and performance tracking. -->
+        <script
+          src="https://browser.sentry-cdn.com/7.52.1/bundle.tracing.min.js"
+          integrity="sha384-muuFXKS3752PNA4rPm9Uq6BLvOfV4CXyr9MHDBPvozOJJUWLKkogEFWOIRoVps43"
+          crossorigin="anonymous"
+        ></script>
+        <script type="text/javascript">
+        if(localStorage.getItem('sentry-opt-out') !== 'opt-out' && navigator.doNotTrack !== "1") {
+            console.log("Sentry: opt-in");
+            Sentry.init({
+                dsn: "https://45e0ec6e4373462b92969505df37cf40@sentry.galaxyproject.org/10",
+                // UPDATE release with commit hash
+                release: "galaxy-training-network@<YOUR_REPO_COMMIT_HASH>", // Replace <YOUR_REPO_COMMIT_HASH>
+                integrations: [new Sentry.BrowserTracing(), new Sentry.Replay()],
+                sampleRate: 0.1,
+                tracesSampleRate: 0.1,
+                replaysSessionSampleRate: 0.01,
+                replaysOnErrorSampleRate: 0.01,
+                sendDefaultPii: false,
+                environment: "production",
+            });
+        }
+        </script>
+
+        <!-- Page view tracking -->
+        <script defer data-domain="training.galaxyproject.org" src="https://plausible.galaxyproject.eu/js/plausible.js"></script>
+        <script>
+        if(localStorage.getItem('plausible-opt-out') !== 'opt-out' && navigator.doNotTrack !== "1") {
+            localStorage.removeItem("plausible_ignore")
+            console.log("Plausible: opt-in");
+            window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }
+        } else {
+            localStorage.setItem("plausible_ignore", "true")
+        }
+        </script>
+
+        <link rel="shortcut icon" href="/training-material/favicon.ico" type="image/x-icon">
+        <link rel="alternate" type="application/atom+xml" href="/training-material/feed.xml">
+        <!-- UPDATE Canonical URL -->
+        <link rel="canonical" href="https://<YOUR_GITHUB_USERNAME>.github.io/<YOUR_REPO_NAME>/topics/assembly/tutorials/hybrid-leptospira-assembly/tutorial.html"> <!-- Replace with your actual URL -->
+        <link rel="license" href="https://spdx.org/licenses/CC-BY-4.0">
+        <link rel="preload" href="/training-material/assets/fonts/AtkinsonHyperlegible/Atkinson-Hyperlegible-Regular-102a.woff2" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="/training-material/assets/fonts/AtkinsonHyperlegible/Atkinson-Hyperlegible-Bold-102a.woff2" as="font" type="font/woff2" crossorigin>
+        <link rel="preload" href="/training-material/assets/fonts/AtkinsonHyperlegible/Atkinson-Hyperlegible-Italic-102a.woff2" as="font" type="font/woff2" crossorigin>
+
+        <link rel="preload" href="/training-material/assets/css/main.css?v=3" as="style">
+        <link rel='preload' href='/training-material/assets/js/bundle.theme.f1f2de89.js' as='script'>
+        <link rel='preload' href='/training-material/assets/js/bundle.main.40d4e218.js' as='script'>
+        <link rel="stylesheet" href="/training-material/assets/css/main.css?v=3">
+        <link rel="manifest" href="/training-material/manifest.json">
+        <meta name="theme-color" content="#2c3143"/>
+
+        <!-- UPDATE Metadata -->
+        <meta name="DC.identifier" content="https://github.com/<YOUR_GITHUB_USERNAME>/<YOUR_REPO_NAME>"> <!-- Replace -->
+        <meta name="DC.type" content="text">
+        <meta name="DC.title" content="Hybrid Genome Assembly of Leptospira">
+        <meta name="DC.publisher" content="Your Name / Lab Name"> <!-- Replace -->
+        <meta name="DC.date" content="YYYY-MM-DD"> <!-- Replace -->
+        <meta name="DC.creator" content="Your Name"> <!-- Replace -->
+        <meta name="description" content="This tutorial demonstrates how to perform a hybrid genome assembly (Illumina + Nanopore) for a bacterium like Leptospira using Galaxy. It includes steps for quality control, host read removal, assembly with SPAdes, and quality assessment with QUAST.">
+        <meta property="og:site_name" content="Your Training Site Name"> <!-- Replace -->
+        <meta property="og:title" content="Hands-on: Hybrid Genome Assembly of Leptospira using Galaxy">
+        <meta property="og:description" content="This tutorial demonstrates how to perform a hybrid genome assembly (Illumina + Nanopore) for a bacterium like Leptospira using Galaxy. It includes steps for quality control, host read removal, assembly with SPAdes, and quality assessment with QUAST.">
+        <!-- Optional: Add an image for social media sharing -->
+        <!-- <meta property="og:image" content="https://<link_to_your_image.png>"> -->
+
+        <!-- UPDATE Schema.org / JSON-LD metadata -->
+        <script type="application/ld+json">
+        {
+          "@context": "http://schema.org",
+          "@type": "LearningResource",
+          "http://purl.org/dc/terms/conformsTo": {
+            "@id": "https://bioschemas.org/profiles/TrainingMaterial/1.0-RELEASE",
+            "@type": "CreativeWork"
+          },
+          "audience": {
+            "@type": "EducationalAudience",
+            "educationalRole": "Students" /* Or Researchers, etc. */
+          },
+          "name": "Hybrid Genome Assembly of Leptospira using Galaxy",
+          "description": "This tutorial demonstrates how to perform a hybrid genome assembly (Illumina + Nanopore) for a bacterium like Leptospira using Galaxy. It includes steps for quality control, host read removal, assembly with SPAdes, and quality assessment with QUAST.",
+          "keywords": "Galaxy, bioinformatics, assembly, hybrid assembly, Leptospira, SPAdes, Nanopore, Illumina, BWA, host removal, QUAST, quality control",
+          "interactivityType": "mixed",
+          "learningResourceType": "hands-on tutorial",
+          "license": "https://spdx.org/licenses/CC-BY-4.0.html",
+          "url": "https://<YOUR_GITHUB_USERNAME>.github.io/<YOUR_REPO_NAME>/topics/assembly/tutorials/hybrid-leptospira-assembly/tutorial.html", /* Replace */
+          "timeRequired": "PT3H", /* Adjust estimate: e.g., PT2H30M for 2.5 hours */
+          "educationalLevel": "Intermediate", /* Or Beginner/Advanced */
+          "author": [
+            {
+              "@type": "Person",
+              "name": "Your Name" /* Replace */
+              /* Optional: Add ORCID */
+              /* "identifier": "https://orcid.org/XXXX-XXXX-XXXX-XXXX" */
+            }
+          ],
+          /* Add contributors if any */
+          /*
+          "contributor": [
+            {
+              "@type": "Person",
+              "name": "Contributor Name"
+            }
+          ],
+          */
+          "datePublished": "YYYY-MM-DD", /* Replace */
+          "dateModified": "YYYY-MM-DD", /* Replace */
+          "provider": { /* Optional: Info about your institution */
+            "@type": "Organization",
+            "name": "Your Institution/Lab", /* Replace */
+            "url": "Link to your institution" /* Replace */
+          },
+          "publisher": { /* Optional: Info about your institution */
+            "@type": "Organization",
+            "name": "Your Institution/Lab", /* Replace */
+            "url": "Link to your institution" /* Replace */
+          },
+          "hasPart": [ /* Link to tools used */
+            {"@type": "SoftwareApplication", "name": "FastQC", "url": "https://www.bioinformatics.babraham.ac.uk/projects/fastqc/"},
+            {"@type": "SoftwareApplication", "name": "MultiQC", "url": "https://multiqc.info/"},
+            {"@type": "SoftwareApplication", "name": "BWA-MEM2", "url": "https://github.com/bwa-mem2/bwa-mem2"},
+            {"@type": "SoftwareApplication", "name": "Samtools", "url": "http://www.htslib.org/"},
+            {"@type": "SoftwareApplication", "name": "Picard", "url": "https://broadinstitute.github.io/picard/"},
+            {"@type": "SoftwareApplication", "name": "SPAdes", "url": "http://cab.spbu.ru/software/spades/"},
+            {"@type": "SoftwareApplication", "name": "QUAST", "url": "http://quast.sourceforge.net/"}
+          ],
+          "competencyRequired": [ /* Link to prerequisite tutorials if available */
+             "Introduction to Galaxy Analyses", /* Example GTN prerequisite */
+             "Quality Control" /* Example GTN prerequisite */
+          ]
+        }
+        </script>
+
+    </head>
+    <body data-spy="scroll" data-target="#toc" data-brightness="auto" data-contrast="auto">
+        <script  src='/training-material/assets/js/bundle.theme.f1f2de89.js'></script> <!-- Assuming you host GTN's JS -->
+        <header>
+            <!-- Use the GTN Header structure or your own -->
+            <nav class="navbar navbar-expand-md navbar-dark" aria-label="Site Navigation">
+                <div class="container">
+                    <a class="navbar-brand" href="/training-material/"> <!-- Link to your site's home -->
+                        <!-- Optional Logo -->
+                        <!-- <img src="/path/to/your/logo.png" height="30" alt="Logo"> -->
+                        Your Site Name <!-- Replace -->
+                    </a>
+                    <!-- Add other navbar items if needed (topics, help, etc.) -->
+                </div>
+            </nav>
+        </header>
+
+        <div class="container main-content" role="main">
+
+            <article class="tutorial topic-assembly"> <!-- Assign relevant topic class -->
+                <!-- UPDATE Title -->
+                <h1 data-toc-skip>Hybrid Genome Assembly of Leptospira using Galaxy</h1>
+
+                <section aria-labelledby="overview-box" id="tutorial-metadata">
+                    <div markdown="0">
+                        <div class="contributors-line">
+                            <!-- UPDATE Contributors -->
+                            <table class="contributions">
+                                <tr>
+                                    <td><abbr title="These people wrote the bulk of the tutorial">Author(s)</abbr></td>
+                                    <td>
+                                        <!-- Replace with your details -->
+                                        Your Name
+                                        <!-- Optional: <a href="link_to_profile" class="contributor-badge"><img src="link_to_avatar" alt="avatar"/>Your Name</a> -->
+                                    </td>
+                                </tr>
+                                <!-- Add reviewers/maintainers if applicable -->
+                                <!--
+                                <tr class="reviewers">
+                                    <td><abbr title="These people reviewed this material">Reviewers</abbr></td>
+                                    <td>Reviewer Name 1, Reviewer Name 2</td>
+                                </tr>
+                                -->
+                            </table>
+                        </div>
+                    </div>
+
+                    <blockquote class="overview">
+                        <div id="overview-box" class="box-title">Overview</div>
+                        <img alt="Creative Commons License: CC-BY" class="float-right" style="border-width:0; display: inline-block; margin:0" src="/training-material/assets/images/cc-by.png" width="88" height="31"/> <!-- Assuming you host GTN's images -->
+
+                        <strong><i class="far fa-question-circle" aria-hidden="true"></i> Questions:</strong>
+                        <ul>
+                            <li>How can I assess the quality of my raw Illumina and Nanopore sequencing reads?</li>
+                            <li>How can I remove reads originating from a host genome (contamination)?</li>
+                            <li>How do I perform a hybrid assembly using both short (Illumina) and long (Nanopore) reads?</li>
+                            <li>How can I evaluate the quality of my final genome assembly?</li>
+                        </ul>
+
+                        <strong><i class="fas fa-bullseye" aria-hidden="true"></i> Objectives: </strong>
+                        <ul>
+                            <li>Perform quality control on raw sequencing data using FastQC and MultiQC.</li>
+                            <li>Map Illumina reads to a host genome using BWA-MEM2 and filter out mapped reads.</li>
+                            <li>Assemble the filtered Illumina reads and Nanopore reads into contigs using SPAdes in hybrid mode.</li>
+                            <li>Assess the quality of the resulting assembly using QUAST against a reference genome.</li>
+                        </ul>
+
+                        <strong><i class="fas fa-check-circle" aria-hidden="true"></i> Requirements:</strong>
+                        <ul>
+                            <!-- Link to relevant prerequisite tutorials -->
+                            <li>Familiarity with the Galaxy interface (<a href="https://training.galaxyproject.org/training-material/topics/introduction/tutorials/galaxy-intro-101/tutorial.html" target="_blank">Introduction to Galaxy Analyses</a> recommended)</li>
+                            <li>Basic understanding of sequencing technologies (Illumina, Nanopore)</li>
+                            <li>Understanding of FASTQ and FASTA formats</li>
+                            <li>Knowledge of Quality Control concepts (<a href="https://training.galaxyproject.org/training-material/topics/sequence-analysis/tutorials/quality-control/tutorial.html" target="_blank">Quality Control Tutorial</a> recommended)</li>
+                        </ul>
+
+                        <div><strong><i class="fas fa-hourglass-half" aria-hidden="true"></i> Time estimation:</strong> ~3 hours (depends on data size and server speed)</div>
+
+                        <div><strong><i class="fas fa-graduation-cap" aria-hidden="true"></i> Level: </strong>
+                            Intermediate <span class="visually-hidden">Intermediate</span>
+                            <span class="level intermediate" title="Intermediate Tutorial"> <!-- Adjust level if needed -->
+                              <i class="fas fa-graduation-cap" aria-hidden="true"></i><i class="fas fa-graduation-cap" aria-hidden="true"></i>
+                            </span>
+                        </div>
+
+                        <div id="supporting-materials"><strong><i class="fa fa-external-link" aria-hidden="true"></i> Supporting Materials:</strong></div>
+                        <ul class="supporting_material">
+                            <!-- Add links to slides, datasets, workflows if you have them -->
+                            <!--
+                            <li class="btn btn-default"><a href="link/to/slides.html"><i class="fab fa-slideshare" aria-hidden="true"></i> Slides</a></li>
+                            <li class="btn btn-default"><a href="link/to/workflow.ga"><i class="fas fa-share-alt" aria-hidden="true"></i> Workflow</a></li>
+                            <li class="btn btn-default"><a href="link/to/zenodo/data"><i class="far fa-copy" aria-hidden="true"></i> Datasets</a></li>
+                            -->
+                        </ul>
+
+                        <div><strong><i class="far fa-calendar" aria-hidden="true"></i> Published:</strong> YYYY-MM-DD</div> <!-- Replace -->
+                        <div><strong><i class="far fa-calendar" aria-hidden="true"></i> Last modification:</strong> YYYY-MM-DD</div> <!-- Replace -->
+                        <div><strong><i class="fas fa-balance-scale" aria-hidden="true"></i> License:</strong>
+                            Tutorial Content is licensed under <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+                        </div>
+                        <!-- Optional: Add PURL if you register one -->
+                        <!-- <div><strong><i class="fas fa-fingerprint" aria-hidden="true"></i><abbr title="Persistent URL">PURL</abbr>:</strong> <a href="https://your.purl.link">https://your.purl.link</a></div> -->
+                        <!-- Optional: Add Revision -->
+                        <!-- <div><strong><i class="fas fa-code-commit" aria-hidden="true"></i> Revision:</strong> 1</div> -->
+                    </blockquote>
+                </section>
+
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-2 hide-when-printing">
+                            <nav id="toc" data-toggle="toc" class="sticky-top" aria-label="Table of Contents"></nav>
+                        </div>
+                        <div class="col-sm-10">
+                            <section aria-label="Tutorial Content" id="tutorial-content">
+
+                                <!-- Introduction -->
+                                <h1>Introduction</h1>
+
+                                <p>Genome assembly is the process of reconstructing a genome sequence from shorter sequencing reads. For many bacterial genomes, especially those with complex repeat structures, combining short, accurate reads (like Illumina) with long reads (like Nanopore or PacBio) in a <em>hybrid assembly</em> approach can significantly improve the contiguity and completeness of the assembly.</p>
+
+                                <p><em>Leptospira</em> are bacteria with relatively complex genomes, often containing multiple chromosomes and plasmids, making assembly challenging. Furthermore, samples containing *Leptospira* (e.g., clinical or environmental samples) are often contaminated with DNA from the host organism or other microbes. Removing this contaminating DNA before assembly is crucial for obtaining an accurate *Leptospira* genome.</p>
+
+                                <p>This tutorial will guide you through a typical hybrid assembly workflow in Galaxy:</p>
+                                <ol>
+                                    <li>Assess the quality of raw Illumina and Nanopore reads.</li>
+                                    <li>Remove reads mapping to a known host genome from the Illumina dataset.</li>
+                                    <li>Perform hybrid assembly using the filtered Illumina reads and the Nanopore reads with the SPAdes assembler.</li>
+                                    <li>Evaluate the quality and completeness of the final assembly using QUAST.</li>
+                                </ol>
+
+                                <blockquote class="agenda">
+                                    <div class="box-title agenda-title" id="agenda">Agenda</div>
+                                    <ol>
+                                      <li><a href="#introduction">Introduction</a></li>
+                                      <li><a href="#get-data">Get the Data</a></li>
+                                      <li><a href="#initial-qc">Initial Quality Control (FastQC & MultiQC)</a></li>
+                                      <li><a href="#host-removal">Host Read Removal (BWA-MEM2, Samtools, Picard)</a></li>
+                                      <li><a href="#hybrid-assembly">Hybrid Assembly (SPAdes)</a></li>
+                                      <li><a href="#assembly-assessment">Assembly Assessment (QUAST)</a></li>
+                                      <li><a href="#conclusion">Conclusion</a></li>
+                                      <li><a href="#further-steps">Further Steps & Considerations</a></li>
+                                    </ol>
+                                </blockquote>
+
+                                <!-- Data Acquisition -->
+                                <h1 id="get-data">Get the Data</h1>
+                                <p>For this tutorial, you will need several input files. We will use placeholder links here; replace them with your actual data sources (e.g., Zenodo, an FTP server, or direct upload).</p>
+
+                                <blockquote class="notranslate hands_on">
+                                    <div class="box-title hands-on-title" id="hands-on-getting-the-data"><i class="fas fa-pencil-alt" aria-hidden="true" ></i> Hands On: Getting the data</div>
+                                    <ol>
+                                        <li>Create a new history for this tutorial and give it a name (e.g., "Leptospira Hybrid Assembly").
+                                            <blockquote class="tip">
+                                                <div class="box-title tip-title" id="tip-creating-a-new-history"><button class="gtn-boxify-button tip" type="button" aria-controls="tip-creating-a-new-history" aria-expanded="true"><i class="far fa-lightbulb" aria-hidden="true"></i> <span>Tip: Creating a new history</span><span class="fold-unfold fa fa-minus-square"></span></button></div>
+                                                <p>To create a new history simply click the <i class="fas fa-plus" aria-hidden="true"></i><span class="visually-hidden">new-history</span> icon at the top of the history panel:</p>
+                                                <p><img src="/training-material/shared/images/history_create_new.svg" alt="UI for creating new history" /></p>
+                                            </blockquote>
+                                        </li>
+                                        <li>Import the following files into your history. Use the links provided or upload your own data.
+                                            <ul>
+                                                <li>**Illumina Paired-End Reads:**
+                                                    <ul>
+                                                        <li><code>https://zenodo.org/record/xxxxx/files/leptospira_illumina_R1.fastq.gz</code> (Replace xxxxx and filename)</li>
+                                                        <li><code>https://zenodo.org/record/xxxxx/files/leptospira_illumina_R2.fastq.gz</code> (Replace xxxxx and filename)</li>
+                                                        <li>**Important:** Build a **paired collection** from these two files. Name it `Illumina PE Reads`.
+                                                            <blockquote class="tip">
+                                                                <div class="box-title tip-title" id="tip-creating-paired-collection"><button class="gtn-boxify-button tip" type="button" aria-controls="tip-creating-paired-collection" aria-expanded="true"><i class="far fa-lightbulb" aria-hidden="true"></i> <span>Tip: Creating a paired collection</span><span class="fold-unfold fa fa-minus-square"></span></button></div>
+                                                                <ol>
+                                                                  <li>Select both the R1 and R2 files by clicking the checkboxes next to them in the history.</li>
+                                                                  <li>Click **"Selected"** at the top of the history, then choose **"Build Dataset Pair"**.</li>
+                                                                  <li>Galaxy will usually auto-detect the pairs based on `_R1` and `_R2`. Ensure the files are assigned correctly (left/forward, right/reverse).</li>
+                                                                  <li>Click **Create Collection**.</li>
+                                                                  <li>Give the collection a meaningful name (e.g., `Illumina PE Reads`).</li>
+                                                                </ol>
+                                                            </blockquote>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li>**Nanopore Long Reads:**
+                                                    <ul>
+                                                        <li><code>https://zenodo.org/record/xxxxx/files/leptospira_nanopore.fastq.gz</code> (Replace xxxxx and filename)</li>
+                                                        <li>Rename this dataset to `Nanopore Reads`.
+                                                            <blockquote class="tip">
+                                                                <div class="box-title tip-title" id="tip-renaming-a-dataset"><button class="gtn-boxify-button tip" type="button" aria-controls="tip-renaming-a-dataset" aria-expanded="true"><i class="far fa-lightbulb" aria-hidden="true"></i> <span>Tip: Renaming a dataset</span><span class="fold-unfold fa fa-minus-square"></span></button></div>
+                                                                <ul>
+                                                                   <li>Click on the <i class="fas fa-pencil-alt" aria-hidden="true"></i><span class="visually-hidden">galaxy-pencil</span> <strong>pencil icon</strong> for the dataset to edit its attributes</li>
+                                                                   <li>In the central panel, change the <strong>Name</strong> field</li>
+                                                                   <li>Click the <strong>Save</strong> button</li>
+                                                                </ul>
+                                                            </blockquote>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li>**Host Genome Reference (FASTA):**
+                                                    <ul>
+                                                        <li><code>https://zenodo.org/record/xxxxx/files/host_genome.fasta.gz</code> (Replace xxxxx and filename with your host, e.g., human_GRCh38.fasta.gz)</li>
+                                                        <li>Rename this dataset to `Host Genome`.</li>
+                                                        <li>**Important:** Ensure the datatype is `fasta`.</li>
+                                                    </ul>
+                                                </li>
+                                                <li>**Leptospira Reference Genome (FASTA):**
+                                                    <ul>
+                                                        <li><code>https://zenodo.org/record/xxxxx/files/leptospira_reference.fasta.gz</code> (Replace xxxxx and filename)</li>
+                                                        <li>Rename this dataset to `Leptospira Reference`.</li>
+                                                        <li>Ensure the datatype is `fasta`.</li>
+                                                    </ul>
+                                                </li>
+                                                <li>**Leptospira Reference Features (GFF/GTF):**
+                                                    <ul>
+                                                        <li><code>https://zenodo.org/record/xxxxx/files/leptospira_reference.gff.gz</code> (Replace xxxxx and filename)</li>
+                                                        <li>Rename this dataset to `Leptospira Features`.</li>
+                                                        <li>Ensure the datatype is `gff` or `gtf`.</li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                            <blockquote class="tip">
+                                                <div class="box-title tip-title" id="tip-importing-data-via-links"><button class="gtn-boxify-button tip" type="button" aria-controls="tip-importing-data-via-links" aria-expanded="true"><i class="far fa-lightbulb" aria-hidden="true" ></i> <span>Tip: Importing data via links</span><span class="fold-unfold fa fa-minus-square"></span></button></div>
+                                                <ul>
+                                                  <li>Copy the link location.</li>
+                                                  <li>Open the Galaxy Upload Manager (<i class="fas fa-upload" aria-hidden="true"></i>).</li>
+                                                  <li>Select <strong>Paste/Fetch Data</strong>.</li>
+                                                  <li>Paste the link(s) into the text field (one link per line).</li>
+                                                  <li>Set the **Type (set all):** appropriately (`fastqsanger.gz` for reads, `fasta.gz` for genomes, `gff.gz` or `gtf.gz` for features). You might need to set types individually if mixing formats.</li>
+                                                  <li>Press <strong>Start</strong>.</li>
+                                                  <li>Once uploaded, rename the datasets as described above.</li>
+                                                </ul>
+                                            </blockquote>
+                                        </li>
+                                        <li>Inspect the FASTQ files (`Illumina PE Reads` collection items and `Nanopore Reads`) by clicking the <i class="far fa-eye" aria-hidden="true"></i> icon. Familiarize yourself with the format (4 lines per read).</li>
+                                    </ol>
+                                </blockquote>
+
+                                <!-- Initial QC -->
+                                <h1 id="initial-qc">Initial Quality Control (FastQC & MultiQC)</h1>
+                                <p>Before any assembly or filtering, it's essential to check the quality of the raw sequencing reads. We will use FastQC to generate individual reports and MultiQC to aggregate them into a single summary.</p>
+
+                                <blockquote class="notranslate hands_on">
+                                    <div class="box-title hands-on-title" id="hands-on-initial-qc"><i class="fas fa-pencil-alt" aria-hidden="true" ></i> Hands On: Initial Quality Control</div>
+                                    <ol>
+                                        <li><span class="tool" data-tool="toolshed.g2.bx.psu.edu/repos/devteam/fastqc/fastqc/0.74+galaxy1"><strong>FastQC</strong></span> (<i class="fas fa-cubes" aria-hidden="true"></i> Galaxy version 0.74+galaxy1 or similar) with the following parameters:
+                                            <ul>
+                                                <li><i class="far fa-copy" aria-hidden="true"></i> *"Short read data from your current history"*: Select the `Illumina PE Reads` collection **and** the `Nanopore Reads` dataset.
+                                                    <blockquote class="tip">
+                                                        <div class="box-title tip-title" id="tip-select-inputs"><button class="gtn-boxify-button tip" type="button" aria-controls="tip-select-inputs" aria-expanded="true"><i class="far fa-lightbulb" aria-hidden="true"></i> <span>Tip: Selecting multiple datasets and collections</span><span class="fold-unfold fa fa-minus-square"></span></button></div>
+                                                        <p>You can select multiple individual datasets by holding <kbd>Ctrl</kbd> (or <kbd>Cmd</kbd> on Mac) while clicking. To select a collection, click the folder icon <i class="fas fa-folder-open" aria-hidden="true"></i> next to the input field and choose your collection.</p>
+                                                    </blockquote>
+                                                </li>
+                                                <li>Leave other parameters at their default values.</li>
+                                                <li>Click **Execute**. This will run FastQC on each file within the collection and on the single Nanopore file.</li>
+                                            </ul>
+                                        </li>
+                                        <li><span class="tool" data-tool="toolshed.g2.bx.psu.edu/repos/iuc/multiqc/multiqc/1.11+galaxy1"><strong>MultiQC</strong></span> (<i class="fas fa-cubes" aria-hidden="true"></i> Galaxy version 1.11+galaxy1 or similar) with the following parameters:
+                                            <ul>
+                                                <li>*"Which tool was used to generate logs?"*: `FastQC`</li>
+                                                <li>In *"FastQC output"*:
+                                                    <ul>
+                                                        <li>*"Type of FastQC output?"*: `RawData`</li>
+                                                        <li><i class="far fa-copy" aria-hidden="true"></i> *"FastQC output Dataset/Collection"*: Select **all** the `RawData` outputs produced by the FastQC step above. You might need to use the multiple dataset selector.</li>
+                                                    </ul>
+                                                </li>
+                                                <li>*"Report title"*: `Initial QC Report` (Optional)</li>
+                                                <li>Click **Execute**.</li>
+                                            </ul>
+                                        </li>
+                                        <li>Examine the **MultiQC Webpage** output. Pay attention to:
+                                            <ul>
+                                                <li>**General Statistics:** Check read counts, read lengths (especially the distribution for Nanopore), and %GC content.</li>
+                                                <li>**Sequence Quality Histograms:** Look for quality drops, particularly at the ends of Illumina reads. Nanopore quality profiles will look different.</li>
+                                                <li>**Per Base Sequence Content:** Check for biases at the beginning of reads (common in Illumina).</li>
+                                                <li>**Adapter Content:** See if any common Illumina adapters are detected.</li>
+                                            </ul>
+                                        </li>
+                                    </ol>
+                                </blockquote>
+
+                                <blockquote class="question">
+                                    <div class="box-title question-title" id="question-qc"><i class="far fa-question-circle" aria-hidden="true" ></i> Question</div>
+                                    <ol>
+                                        <li>Based on the FastQC/MultiQC report for the Illumina reads, is there a significant drop in quality towards the 3' end? Are adapters detected?</li>
+                                        <li>What is the range of read lengths observed in the Nanopore data? Is the quality generally lower than Illumina?</li>
+                                        <li>Are there any other warnings or failures in the reports that might warrant further investigation or preprocessing (e.g., adapter trimming, quality trimming)?</li>
+                                    </ol>
+                                    <blockquote class="solution">
+                                        <div class="box-title solution-title" id="solution-qc"><button class="gtn-boxify-button solution" type="button" aria-controls="solution-qc" aria-expanded="true"><i class="far fa-eye" aria-hidden="true" ></i> <span>Solution</span><span class="fold-unfold fa fa-minus-square"></span></button></div>
+                                        <ol>
+                                            <li>Answers will depend on the specific data, but typically Illumina data shows a quality drop at the 3' end. Adapter content might be present, especially if library preparation wasn't optimal. FastQC will issue warnings/failures if these are significant.</li>
+                                            <li>Nanopore reads typically have a wide length distribution (from hundreds to tens or hundreds of thousands of bases) and lower per-base accuracy (lower quality scores) compared to Illumina.</li>
+                                            <li>Examine the summary table in MultiQC and the individual FastQC reports (accessible via links in MultiQC or directly in the history) for specific warnings like "Per base sequence content", "Sequence Duplication Levels", or "Overrepresented sequences". These might indicate technical issues or biological features (like high repeat content). While this workflow doesn't include trimming, these results would inform whether trimming is necessary.</li>
+                                        </ol>
+                                    </blockquote>
+                                </blockquote>
+
+                                <!-- Host Removal -->
+                                <h1 id="host-removal">Host Read Removal (BWA-MEM2, Samtools, Picard)</h1>
+                                <p>Now, we will remove reads from our Illumina dataset that likely originated from the host organism. We do this by aligning the Illumina reads to the host genome and then keeping only the reads that *did not* align.</p>
+                                <p><strong>CRITICAL STEP:</strong> You MUST provide the correct host reference genome to BWA-MEM2.</p>
+
+                                <blockquote class="notranslate hands_on">
+                                    <div class="box-title hands-on-title" id="hands-on-host-removal"><i class="fas fa-pencil-alt" aria-hidden="true" ></i> Hands On: Host Read Removal</div>
+                                    <ol>
+                                        <li><span class="tool" data-tool="toolshed.g2.bx.psu.edu/repos/iuc/bwa_mem2/bwa_mem2/2.2.1+galaxy1"><strong>BWA-MEM2</strong></span> (<i class="fas fa-cubes" aria-hidden="true"></i> Galaxy version 2.2.1+galaxy1 or similar) with the following parameters:
+                                            <ul>
+                                                <li>*"Select analysis mode"*: `Illumina`</li>
+                                                <li>*"Select input type"*: `Paired Collection`</li>
+                                                <li><i class="fas fa-folder-open" aria-hidden="true"></i> *"Select a paired collection"*: Choose the `Illumina PE Reads` collection.</li>
+                                                <li>*"Will you select a reference genome from your history or use a built-in index?"*: `Use a genome from history`</li>
+                                                <li><i class="far fa-copy" aria-hidden="true"></i> *"Use the following dataset as the reference sequence"*: Select your `Host Genome` FASTA file. **<-- VERY IMPORTANT!**</li>
+                                                <li>*"Set read groups information?"*: `Do not set` (or set appropriately if needed).</li>
+                                                <li>*"Select analysis type"*: `Simple Illumina mode`</li>
+                                                <li>*"Sort results by"*: `Read name` (important for paired-end processing later).</li>
+                                                <li>Leave other parameters at default unless you have specific needs.</li>
+                                                <li>Click **Execute**.</li>
+                                            </ul>
+                                        </li>
+                                        <li><span class="tool" data-tool="toolshed.g2.bx.psu.edu/repos/iuc/samtools_view/samtools_view/1.20+galaxy3"><strong>Samtools view</strong></span> (<i class="fas fa-cubes" aria-hidden="true"></i> Galaxy version 1.20+galaxy3 or similar) with the following parameters:
+                                            <ul>
+                                                <li><i class="far fa-copy" aria-hidden="true"></i> *"SAM/BAM/CRAM input file"*: Select the BAM output from **BWA-MEM2**.</li>
+                                                <li>*"What would you like to look at?"*: `Selected reads`</li>
+                                                <li>In *"Filter by properties"*:
+                                                    <ul>
+                                                        <li>*"Filter by flag"*: `Filter by ONLY requiring selected flags`</li>
+                                                        <li>*"Include reads with ANY of the following flags set"*: Check `Read is unmapped (4)` **AND** `Mate is unmapped (8)`.</li>
+                                                        <li>*"Exclude reads with ANY of the following flags set"*: Check `Alignment is not primary (256)`. (This helps remove secondary alignments if any exist).</li>
+                                                    </ul>
+                                                </li>
+                                                <li>In *"Output options"*:
+                                                    <ul>
+                                                        <li>*"Output format"*: `BAM`</li>
+                                                    </ul>
+                                                </li>
+                                                <li>Click **Execute**. This selects read pairs where *both* reads are unmapped to the host genome.</li>
+                                            </ul>
+                                        </li>
+                                        <li><span class="tool" data-tool="toolshed.g2.bx.psu.edu/repos/devteam/picard/picard_SamToFastq/3.1.1.0"><strong>SamToFastq (Picard)</strong></span> (<i class="fas fa-cubes" aria-hidden="true"></i> Galaxy version 3.1.1.0 or similar) with the following parameters:
+                                            <ul>
+                                                <li><i class="far fa-copy" aria-hidden="true"></i> *"Input SAM/BAM file"*: Select the BAM output from **Samtools view**.</li>
+                                                <li>*"Output format"*: `Output paired reads in separate files (FASTQ_OUTPUT and SECOND_END_FASTQ)` OR `Output paired reads into a single interleaved file (FASTQ_OUTPUT)` - We need **interleaved** for SPAdes in this workflow. Select `Output paired reads into a single interleaved file (FASTQ_OUTPUT)`.</li>
+                                                <li>*"Re-Reverse Complement"*: `Yes` (Usually correct for standard Illumina paired-end preps).</li>
+                                                <li>Click **Execute**.</li>
+                                            </ul>
+                                        </li>
+                                        <li>Rename the resulting interleaved FASTQ file from **SamToFastq** to `Filtered Illumina Reads`.</li>
+                                    </ol>
+                                </blockquote>
+
+                                <blockquote class="question">
+                                    <div class="box-title question-title" id="question-host-removal"><i class="far fa-question-circle" aria-hidden="true" ></i> Question</div>
+                                    <ol>
+                                        <li>Why is it important to sort the BWA-MEM2 output by read name before filtering with Samtools?</li>
+                                        <li>What do the Samtools flags 4 and 8 signify? Why do we require *both* to be set for filtering?</li>
+                                        <li>Approximately what percentage of your Illumina reads were removed as host contamination? (Hint: Compare read counts before and after filtering. You can see counts by clicking on the dataset name in the history).</li>
+                                    </ol>
+                                    <blockquote class="solution">
+                                        <div class="box-title solution-title" id="solution-host-removal"><button class="gtn-boxify-button solution" type="button" aria-controls="solution-host-removal" aria-expanded="true"><i class="far fa-eye" aria-hidden="true" ></i> <span>Solution</span><span class="fold-unfold fa fa-minus-square"></span></button></div>
+                                        <ol>
+                                            <li>Sorting by read name ensures that paired reads are adjacent in the BAM file. While Samtools view filtering doesn't strictly require this for flag-based filtering, tools that process paired reads often expect them to be grouped or correctly paired, and Picard's SamToFastq works best with name-sorted input for paired-end extraction.</li>
+                                            <li>Flag 4 means "the read is unmapped". Flag 8 means "the mate of this read is unmapped". By requiring both flags (`-f 12` is equivalent in command line, selecting only reads where *both* are unmapped), we ensure that we only keep read pairs where neither read mapped to the host genome. If we only filtered on flag 4, we might keep one read of a pair where the other read *did* map to the host.</li>
+                                            <li>The percentage depends heavily on the sample. Calculate `(Initial Reads - Filtered Reads) / Initial Reads * 100%`. In a clinical sample, this could be >90%; in a cultured sample, it might be very low.</li>
+                                        </ol>
+                                    </blockquote>
+                                </blockquote>
+
+                                <!-- Optional: QC after filtering -->
+                                <blockquote class="details">
+                                    <div class="box-title details-title" id="details-qc-after-filtering"><button class="gtn-boxify-button details" type="button" aria-controls="details-qc-after-filtering" aria-expanded="true"><i class="far fa-eye" aria-hidden="true"></i> <span>Optional: Quality Control after Host Removal</span><span class="fold-unfold fa fa-minus-square"></span></button></div>
+                                    <p>It can be useful to run FastQC again on the `Filtered Illumina Reads` dataset to see if the removal process significantly changed the quality profile or introduced any artifacts. You can then run MultiQC again including this new report along with the original reports for comparison.</p>
+                                </blockquote>
+
+
+                                <!-- Hybrid Assembly -->
+                                <h1 id="hybrid-assembly">Hybrid Assembly (SPAdes)</h1>
+                                <p>Now we will assemble the filtered Illumina short reads and the Nanopore long reads together using the SPAdes assembler in hybrid mode. SPAdes uses the long reads to help resolve repeats and bridge gaps in the assembly graph constructed primarily from the short reads.</p>
+
+                                <blockquote class="notranslate hands_on">
+                                    <div class="box-title hands-on-title" id="hands-on-hybrid-assembly"><i class="fas fa-pencil-alt" aria-hidden="true" ></i> Hands On: Hybrid Assembly with SPAdes</div>
+                                    <ol>
+                                        <li><span class="tool" data-tool="toolshed.g2.bx.psu.edu/repos/nml/spades/spades/4.1.0+galaxy0"><strong>SPAdes</strong></span> (<i class="fas fa-cubes" aria-hidden="true"></i> Galaxy version 4.1.0+galaxy0 or similar) with the following parameters:
+                                            <ul>
+                                                <li>*"Run only assembly (skip error correction)"*: `No` (Error correction is generally recommended)</li>
+                                                <li>*"Run mismatch careful correction (for small genomes)"*: `Yes` (Often beneficial for bacterial genomes)</li>
+                                                <li>*"Use isolated assembly mode (for single cells or viruses)"*: `Yes` (Can sometimes help with uneven coverage, often good for bacteria too, even if not single-cell)</li>
+                                                <li>*"K-mer values"*: Leave blank for automatic detection based on read lengths (`auto`). SPAdes handles this well for hybrid assembly.</li>
+                                                <li>*"Coverage cutoff"*: `auto`</li>
+                                                <li>In *"Select input data type"*:
+                                                    <ul>
+                                                        <li>Click *"Insert Read library"*</li>
+                                                        <li>In *"1: Read library"*:
+                                                            <ul>
+                                                                <li>*"Type of read library"*: `Paired-end/mate pairs reads`</li>
+                                                                <li>*"Input sequences type"*: `Separate datasets` -> **Change this to** `Interlaced dataset`</li>
+                                                                <li><i class="far fa-copy" aria-hidden="true"></i> *"Interlaced forward and reverse reads file"*: Select the `Filtered Illumina Reads` dataset.</li>
+                                                                <li>*"Orientation of reads"*: `Forward/reverse` (Standard Illumina `fr` orientation)</li>
+                                                            </ul>
+                                                        </li>
+                                                        <li>Click *"Insert Read library"* again</li>
+                                                        <li>In *"2: Read library"*:
+                                                            <ul>
+                                                                <li>*"Type of read library"*: `Nanopore reads`</li>
+                                                                <li><i class="far fa-copy" aria-hidden="true"></i> *"Input sequences file"*: Select the `Nanopore Reads` dataset.</li>
+                                                                <!-- Add PacBio section here if you also have PacBio reads -->
+                                                                <!--
+                                                                <li>Click *"Insert Read library"* again</li>
+                                                                <li>In *"3: Read library"*:
+                                                                    <ul>
+                                                                        <li>*"Type of read library"*: `PacBio reads`</li>
+                                                                        <li>*"Input sequences file"*: Select your PacBio reads dataset.</li>
+                                                                    </ul>
+                                                                </li>
+                                                                -->
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <!-- If you had other read types like PacBio or trusted contigs, add them similarly -->
+                                                <li>*"Select optional outputs to preserve"*: Ensure at least `Contigs` and `Scaffolds` are checked. `Assembly graph` can also be useful for diagnostics.</li>
+                                                <li>Click **Execute**. SPAdes can take a significant amount of time and memory depending on the data size.</li>
+                                            </ul>
+                                        </li>
+                                        <li>Examine the output files, particularly:
+                                            <ul>
+                                                <li>`contigs.fasta`: Contiguous sequences assembled by SPAdes.</li>
+                                                <li>`scaffolds.fasta`: Contigs that have been ordered and oriented using paired-end and long-read information, possibly with gaps (represented by 'N's) between them. This is usually the primary output for downstream analysis.</li>
+                                                <li>`spades.log`: Contains detailed information about the run, k-mers used, read statistics, etc. Useful for troubleshooting.</li>
+                                            </ul>
+                                        </li>
+                                    </ol>
+                                </blockquote>
+
+                                <blockquote class="question">
+                                    <div class="box-title question-title" id="question-spades"><i class="far fa-question-circle" aria-hidden="true" ></i> Question</div>
+                                    <ol>
+                                        <li>What is the main advantage of using long reads (Nanopore) in addition to short reads (Illumina) for genome assembly?</li>
+                                        <li>Look at the `spades.log` file. What range of k-mer sizes did SPAdes automatically choose to use?</li>
+                                        <li>What is the difference between the `contigs.fasta` and `scaffolds.fasta` files produced by SPAdes? Which is usually more complete?</li>
+                                    </ol>
+                                    <blockquote class="solution">
+                                        <div class="box-title solution-title" id="solution-spades"><button class="gtn-boxify-button solution" type="button" aria-controls="solution-spades" aria-expanded="true"><i class="far fa-eye" aria-hidden="true" ></i> <span>Solution</span><span class="fold-unfold fa fa-minus-square"></span></button></div>
+                                        <ol>
+                                            <li>Long reads can span repetitive regions in the genome that are longer than short reads. This allows the assembler to correctly place these regions and connect adjacent unique sequences, leading to fewer, longer, and more contiguous contigs/scaffolds compared to a short-read-only assembly.</li>
+                                            <li>The log file will contain lines indicating the k-mer sizes used (e.g., `K values: 21, 33, 55, 77`). The exact values depend on the read lengths and complexity of the data.</li>
+                                            <li>`contigs.fasta` contains sequences where every base is supported by read evidence. `scaffolds.fasta` represents a higher level of organization where contigs have been ordered and oriented based on read pairing or long-read information. Scaffolds may contain gaps (stretches of 'N's) of estimated size between contigs. Scaffolds are typically more complete in terms of representing the overall genome structure, although they might contain estimated gaps.</li>
+                                        </ol>
+                                    </blockquote>
+                                </blockquote>
+
+                                <!-- Assembly Assessment -->
+                                <h1 id="assembly-assessment">Assembly Assessment (QUAST)</h1>
+                                <p>After generating the assembly, we need to evaluate its quality. QUAST (Quality Assessment Tool for Genome Assemblies) is a popular tool for this. It calculates various metrics, such as N50, L50, number of contigs, total length, and optionally compares the assembly against a reference genome to assess completeness and accuracy.</p>
+
+                                <blockquote class="notranslate hands_on">
+                                    <div class="box-title hands-on-title" id="hands-on-assembly-assessment"><i class="fas fa-pencil-alt" aria-hidden="true" ></i> Hands On: Assembly Assessment with QUAST</div>
+                                    <ol>
+                                        <li><span class="tool" data-tool="toolshed.g2.bx.psu.edu/repos/iuc/quast/quast/5.3.0+galaxy0"><strong>Quast</strong></span> (<i class="fas fa-cubes" aria-hidden="true"></i> Galaxy version 5.3.0+galaxy0 or similar) with the following parameters:
+                                            <ul>
+                                                <li>*"Mode"*: `Default` (or `Large` if genome > 100 Mbp, not typical for Leptospira)</li>
+                                                <li>*"Assembly type"*: `Genome`</li>
+                                                <li>In *"Use assemblies"*:
+                                                    <ul>
+                                                        <li><i class="far fa-copy" aria-hidden="true"></i> *"Contigs/scaffolds file(s)"*: Select the `scaffolds.fasta` output from **SPAdes**. (You could also select `contigs.fasta` to compare).</li>
+                                                        <!-- You can add multiple assemblies here to compare them -->
+                                                    </ul>
+                                                </li>
+                                                <li>*"Use reference genome?"*: `Yes`</li>
+                                                <li><i class="far fa-copy" aria-hidden="true"></i> *"Reference genome file"*: Select the `Leptospira Reference` FASTA file.</li>
+                                                <li>*"Use gene annotations?"*: `Yes`</li>
+                                                <li><i class="far fa-copy" aria-hidden="true"></i> *"Reference annotation file (GFF/BED)"*: Select the `Leptospira Features` GFF/GTF file.</li>
+                                                <li>*"Type of organism"*: `Prokaryotes`</li>
+                                                <li>*"Contig length threshold for statistics (min_contig)"*: `500` (A common threshold, adjust if needed)</li>
+                                                <li>In *"Advanced options"*:
+                                                    <ul>
+                                                        <li>*"Comma-separated list of contig length thresholds for metrics (contig_thresholds)"*: `0, 1000, 5000, 10000` (Example: provides metrics at different size cutoffs)</li>
+                                                    </ul>
+                                                </li>
+                                                <li>*"Output files"*: Ensure `HTML report` is selected. `Circos plot` can also be informative if the reference is well-annotated.</li>
+                                                <li>Click **Execute**.</li>
+                                            </ul>
+                                        </li>
+                                        <li>Examine the **QUAST HTML report**. Key metrics to look for include:
+                                            <ul>
+                                                <li>**# contigs (>= 500 bp):** Fewer is generally better, indicating higher contiguity.</li>
+                                                <li>**Largest contig:** The size of the longest scaffold.</li>
+                                                <li>**Total length:** How does this compare to the expected genome size of *Leptospira*?</li>
+                                                <li>**N50 / NG50:** N50 is a measure of contiguity based on the assembly length. NG50 is similar but based on the reference genome size (often more informative if a good reference is available). Higher is better.</li>
+                                                <li>**L50 / LG50:** The minimum number of scaffolds needed to cover 50% of the assembly (N50) or reference (NG50). Lower is better.</li>
+                                                <li>**Genome fraction (%):** Percentage of the reference genome covered by the assembly. Higher is better.</li>
+                                                <li>**# misassemblies:** Number of potential errors (relocations, inversions, translocations) identified by comparing scaffolds to the reference. Lower is better.</li>
+                                                <li>**# mismatches per 100 kbp / # indels per 100 kbp:** Measures of base-level accuracy compared to the reference. Lower is better.</li>
+                                                <li>**# genes / # partially covered genes:** If annotation was provided, indicates how many reference genes were found completely or partially in the assembly.</li>
+                                            </ul>
+                                        </li>
+                                    </ol>
+                                </blockquote>
+
+                                <blockquote class="question">
+                                    <div class="box-title question-title" id="question-quast"><i class="far fa-question-circle" aria-hidden="true" ></i> Question</div>
+                                    <ol>
+                                        <li>What is the N50 value for your assembly? How does this compare to typical N50 values for short-read-only assemblies of similar bacteria (often in the tens or low hundreds of kbp)?</li>
+                                        <li>How does the total length of your assembly compare to the size of the *Leptospira* reference genome? What could explain any differences?</li>
+                                        <li>How many misassemblies were detected? What does this suggest about the structural accuracy of your assembly?</li>
+                                        <li>Based on the QUAST report, would you consider this a "good" assembly? What are its strengths and weaknesses?</li>
+                                    </ol>
+                                     <blockquote class="solution">
+                                        <div class="box-title solution-title" id="solution-quast"><button class="gtn-boxify-button solution" type="button" aria-controls="solution-quast" aria-expanded="true"><i class="far fa-eye" aria-hidden="true" ></i> <span>Solution</span><span class="fold-unfold fa fa-minus-square"></span></button></div>
+                                        <ol>
+                                            <li>Hybrid assemblies typically achieve much higher N50 values (hundreds of kbp to several Mbp, potentially whole chromosomes for bacteria) compared to short-read only assemblies due to the ability of long reads to resolve repeats. Check your report for the specific value.</li>
+                                            <li>Ideally, the total length should be close to the reference genome size. Differences could be due to: incomplete assembly (missing regions), over-assembly (e.g., redundant contigs representing heterozygosity or unresolved repeats), genuine differences between the sequenced strain and the reference (e.g., plasmids, insertions/deletions), or inclusion of incompletely removed contamination.</li>
+                                            <li>Check the '# misassemblies' row. A low number (ideally zero or single digits for a bacterial genome) suggests good structural agreement with the reference. High numbers indicate potential large-scale errors in the assembly.</li>
+                                            <li>A "good" assembly typically has high contiguity (high N50, low L50, few contigs), high completeness (genome fraction near 100%, high gene completeness), and high accuracy (low misassemblies, mismatches, indels). Evaluate your assembly based on these criteria. Strengths might be high contiguity thanks to long reads; weaknesses might include remaining small contigs, some misassemblies, or base-level errors that might require polishing.</li>
+                                        </ol>
+                                    </blockquote>
+                                </blockquote>
+
+                                <!-- Conclusion -->
+                                <h1 id="conclusion">Conclusion</h1>
+
+                                <p>In this tutorial, we have successfully performed a hybrid genome assembly for a *Leptospira* sample using Galaxy. We started with raw Illumina and Nanopore reads, assessed their quality, removed contaminating host reads from the Illumina data, performed hybrid assembly with SPAdes, and evaluated the final assembly using QUAST.</p>
+
+                                <p>Hybrid assembly leveraging both short and long reads generally produces significantly more contiguous and complete genomes compared to using either technology alone, especially for genomes with repetitive elements. Removing host contamination is a critical preprocessing step when working with samples derived from a host environment.</p>
+
+                                <!-- Further Steps -->
+                                <h1 id="further-steps">Further Steps & Considerations</h1>
+                                <ul>
+                                    <li><strong>Adapter/Quality Trimming:</strong> While not included in this specific workflow, trimming Illumina reads for adapters and low-quality bases (using tools like <span class="tool">Trimmomatic</span> or <span class="tool">Cutadapt</span>) before host removal or assembly is often recommended and can improve assembly results.</li>
+                                    <li><strong>PolyA Trimming:</strong> If using Nanopore direct RNA reads, or cDNA reads suspected of having PolyA tails, trimming these with <span class="tool">Cutadapt</span> might be necessary.</li>
+                                    <li><strong>Assembly Polishing:</strong> Hybrid assemblies, especially those involving Nanopore reads, often benefit from "polishing" to correct base-level errors (mismatches and indels). This typically involves mapping the accurate short reads (Illumina) back to the SPAdes assembly and using tools like <span class="tool">Pilon</span> or <span class="tool">Polypolish</span>. Long reads can also be used for polishing with tools like <span class="tool">Medaka</span> (for Nanopore) or <span class="tool">Arrow/GCpp</span> (for PacBio).</li>
+                                    <li><strong>Annotation:</strong> Once you have a high-quality assembly, the next step is usually genome annotation to identify genes, RNA features, and other genomic elements (using tools like <span class="tool">Prokka</span> for prokaryotes or <span class="tool">Funannotate</span> for eukaryotes).</li>
+                                    <li><strong>Alternative Assemblers:</strong> SPAdes is a popular hybrid assembler, but others exist, such as <span class="tool">Unicycler</span> (which incorporates polishing) or <span class="tool">Flye</span> (primarily long-read based but can use short reads for polishing).</li>
+                                </ul>
+
+                            </section> <!-- End tutorial-content -->
+
+                            <section aria-label="Tutorial Footer, Feedback, Citation" id="tutorial-footer">
+                                <h3>You've Finished the Tutorial</h3>
+
+                                <blockquote class="key_points">
+                                    <div class="box-title"><i class="fas fa-key" aria-hidden="true"></i> Key points</div>
+                                    <ul>
+                                        <li>Quality control of raw reads (Illumina and Nanopore) is crucial before assembly.</li>
+                                        <li>Removing host contamination reads is essential for accurate assembly of microbes from host-associated samples.</li>
+                                        <li>Hybrid assembly using SPAdes combines the accuracy of short reads with the length of long reads for improved contiguity.</li>
+                                        <li>QUAST provides comprehensive metrics to assess the quality and completeness of a genome assembly, especially when compared to a reference.</li>
+                                        <li>Post-assembly polishing is often recommended for assemblies involving long reads to improve base-level accuracy.</li>
+                                    </ul>
+                                </blockquote>
+
+                                <!-- UPDATE FAQs -->
+                                <h1>Frequently Asked Questions</h1>
+                                <p>Have questions about this tutorial? Check standard Galaxy Training Network FAQ pages:</p>
+                                <ul>
+                                  <li><a href="/training-material/faqs/galaxy/">Galaxy FAQs</a> </li>
+                                  <li><a href="https://gitter.im/Galaxy-Training-Network/Lobby" target="_blank">GTN Gitter Chat</a></li>
+                                  <li><a href="https://help.galaxyproject.org" target="_blank">Galaxy Help Forum</a></li>
+                                  <!-- Add links to your own specific FAQs if you create them -->
+                                </ul>
+
+                                <!-- UPDATE Feedback -->
+                                <h1 id="gtn-feedback">Feedback</h1>
+                                <p>Did you use this material? Please provide feedback:</p>
+                                <!-- Replace with link to your feedback form or issue tracker -->
+                                <p><a href="LINK_TO_YOUR_FEEDBACK_FORM_OR_GITHUB_ISSUES" target="_blank">Provide feedback here</a></p>
+                                <!-- Example using Google Form (like GTN)
+                                <iframe id="feedback-google" class="google-form" src="YOUR_GOOGLE_FORM_EMBED_LINK"><a href="YOUR_GOOGLE_FORM_LINK">Feedback Form</a></iframe>
+                                -->
+
+                                <!-- UPDATE Citation -->
+                                <h1>Citing this Tutorial</h1>
+                                <p>If you use this tutorial in your work, please cite it as follows:</p>
+                                <ol>
+                                    <li id="citation-text">
+                                        Your Name(s). (YYYY). <b>Hybrid Genome Assembly of Leptospira using Galaxy (Version X)</b>. <i>Your Website/Repository Name</i>. <a href="https://<YOUR_GITHUB_USERNAME>.github.io/<YOUR_REPO_NAME>/topics/assembly/tutorials/hybrid-leptospira-assembly/tutorial.html">https://<YOUR_GITHUB_USERNAME>.github.io/<YOUR_REPO_NAME>/topics/assembly/tutorials/hybrid-leptospira-assembly/tutorial.html</a>. Accessed: TODAY. <!-- Replace with your details -->
+                                    </li>
+                                    <!-- Optional: Cite relevant papers for methods/tools if desired -->
+                                </ol>
+                                <script>
+                                const citationTodaysDate = new Date();
+                                const citationTextElement = document.getElementById("citation-text");
+                                if (citationTextElement) {
+                                    citationTextElement.innerHTML = citationTextElement.innerHTML.replace("TODAY", citationTodaysDate.toDateString());
+                                }
+                                </script>
+
+                                <i class="far fa-thumbs-up" aria-hidden="true"></i> Congratulations on successfully completing this tutorial!
+
+                            </section> <!-- End tutorial-footer -->
+                        </div> <!-- End col-sm-10 -->
+                    </div> <!-- End row -->
+                </div> <!-- End container -->
+            </article> <!-- End tutorial -->
+
+        </div> <!-- End main-content -->
+
+        <footer>
+            <hr />
+            <div class="container">
+                <!-- Add your footer content here - credits, links, etc. -->
+                 <p>Maintained by Your Name/Lab Name. Content licensed under CC-BY 4.0.</p> <!-- Replace -->
+            </div>
+        </footer>
+
+        <script  async defer src='/training-material/assets/js/bundle.main.40d4e218.js'></script> <!-- Assuming you host GTN's JS -->
+
+    </body>
+</html>
